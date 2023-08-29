@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import SearchBar from './components/search_bar';
-import YTSearch from 'youtube-api-search';
 import VideoList from './components/video_list';
 import VideoDetail from './components/video_detail';
-const API_KEY = 'AIzaSyDUCmh10vv0-uihtrWwq_OsbqKkcq9sU-w';
+
+import { loadVideos } from './lib/videosService';
 
 class App extends Component {
   constructor(props){
@@ -13,17 +13,18 @@ class App extends Component {
       videos : [],
       selectedVideo:null
     };
+  }
 
-    this.videoSearch('surfboards')
+  componentDidMount(){
+    loadVideos()
+      .then(videos => {
+        console.log(videos);
+        this.setState({videos})
+      })
   }
 
   videoSearch(term) {
-    YTSearch({key : API_KEY, term: term}, (videos) => {
-      this.setState({
-        videos : videos,
-        selectedVideo : videos[0]
-      })
-    })
+
   }
 
   render(){
